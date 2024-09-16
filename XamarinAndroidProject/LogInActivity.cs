@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Wimika.MoneyGuard.Application.REST.ResponseModels;
+using Wimika.MoneyGuard.Application.Tools;
 using Wimika.MoneyGuard.Core.Android;
 using Wimika.MoneyGuard.Core.Types;
 
@@ -65,54 +67,58 @@ namespace AndroidTestApp
         {
             var response = await new LoginService().Session(usernameEditText.Text, passwordEditText.Text); // partner bank login
 
+            var moneyGuardStatus = await MoneyGuardApp.Status(this, response.Data.SessionId);
+
             try
             {
-                var session = await MoneyGuardSdk.Register(this, WIMIKA_XAMARIN_BANK, response.Data.SessionId);
-                Console.WriteLine("InstallationId -> " + session.InstallationId);
-                Console.WriteLine("SessionId -> " + session.SessionId);
-                SessionHolder.Session = session;
-
-                if (session != null) //if we get session, go ahead with typing profile check
+                if (moneyGuardStatus == MoneyGuardAppStatus.Active)
                 {
-                    var typingProfileMatchingResult = await SessionHolder.Session.TypingProfileMatcher.MatchTypingProfile(recorder);
-                    var message = "Not Enrolled";
-                    bool notMatched = false;
+                    var session = await MoneyGuardSdk.Register(this, WIMIKA_XAMARIN_BANK, response.Data.SessionId);
+                    Console.WriteLine("InstallationId -> " + session.InstallationId);
+                    Console.WriteLine("SessionId -> " + session.SessionId);
+                    SessionHolder.Session = session;
 
-                    if (typingProfileMatchingResult.IsEnrolledOnThisDevice)
+                    if (session != null) //if we get session, go ahead with typing profile check
                     {
-                        if (typingProfileMatchingResult.Matched)
+                        var typingProfileMatchingResult = await SessionHolder.Session.TypingProfileMatcher.MatchTypingProfile(recorder);
+                        var message = "Not Enrolled";
+                        bool notMatched = false;
+
+                        if (typingProfileMatchingResult.IsEnrolledOnThisDevice)
                         {
-                            if (typingProfileMatchingResult.HighConfidence)
+                            if (typingProfileMatchingResult.Matched)
                             {
-                                message = "Enrolled and Matched With High Confidence";
+                                if (typingProfileMatchingResult.HighConfidence)
+                                {
+                                    message = "Enrolled and Matched With High Confidence";
+                                }
+                                else
+                                {
+                                    message = "Enrolled and Matched With Low Confidence";
+                                }
                             }
                             else
                             {
-                                message = "Enrolled and Matched With Low Confidence";
+                                //typing profile did not match, do not proceed
+                                message = "Not matched";
+                                notMatched = true;
                             }
                         }
-                        else
+                        else if (typingProfileMatchingResult.HasOtherEnrollments)
                         {
-                            //typing profile did not match, do not proceed
-                            message = "Not matched";
-                            notMatched = true;
+                            message = "User Account has enrollment on other devices";
                         }
-                    }
-                    else if (typingProfileMatchingResult.HasOtherEnrollments)
-                    {
-                        message = "User Account has enrollment on other devices";
-                    }
 
-                    Toast.MakeText(
-                        this,
-                        message,
-                        ToastLength.Long
-                        ).Show();
+                        Toast.MakeText(
+                            this,
+                            message,
+                            ToastLength.Long
+                            ).Show();
 
-
-                    if (notMatched)
-                    {
-                        return;
+                        if (notMatched)
+                        {
+                            return;
+                        }
                     }
                 }
             }
@@ -124,7 +130,9 @@ namespace AndroidTestApp
             }
 
             //StartActivity(typeof(ChoosingActivity));
-            StartActivity(typeof(DashboardActivity));
+            Intent intent = new Intent(this, typeof(DashboardActivity));
+            intent.PutExtra("moneyguardStatus", moneyGuardStatus.ToString());
+            StartActivity(intent);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

@@ -32,69 +32,28 @@
 
 
     <LinearLayout
- android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="vertical"
-    android:padding="16dp"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-      <Space
-            android:layout_width="match_parent"
-            android:layout_height="5px"/>
-
-
-  <androidx.cardview.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-   app:cardBackgroundColor="@color/colorPrimaryDark"
-    android:layout_below="@+id/headerLayout"
-    android:elevation="4dp"
->
-
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:padding="10dp">
-
-      <TextView
-        android:id="@+id/bodyText"
-        android:textColor="@android:color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="Active Policy cover:"
-        android:textSize="10sp" />
-
-        <TextView
-        android:id="@+id/txt_acc_numbers_covered"
-        android:textColor="@android:color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textFontWeight="15"
-        android:text="0135426378"
-        android:textSize="16sp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20px"/>
-      
-    </LinearLayout>
-
-  </androidx.cardview.widget.CardView>
-
-          <Space
-            android:layout_width="match_parent"
-            android:layout_height="50px"/>
-
-         <Button
-        android:id="@+id/btn_install_moneyguard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Install Moneyguard" />
-       
-</LinearLayout>
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <Button
+            android:id="@+id/btn_install_moneyguard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="Install Moneyguard" />
+
+        <Button
+            android:id="@+id/btn_purchase_policy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="Purchase Policy" />
+
+    </LinearLayout>
    
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
