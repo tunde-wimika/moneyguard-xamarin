@@ -80,6 +80,19 @@ namespace AndroidTestApp
 
                     if (session != null) //if we get session, go ahead with typing profile check
                     {
+                        var scanResult = await SessionHolder.Session.CheckCredential(
+                           new Wimika.MoneyGuard.Core.Types.Credential
+                           {
+                               Username = usernameEditText.Text,
+                               LastThreePasswordCharactersHash = ComputeSha256Hash(passwordEditText.Text.Substring(passwordEditText.Text.Length - 3)),
+                               Domain = "wimika.ng",
+                               HashAlgorithm = Wimika.MoneyGuard.Core.Types.HashAlgorithm.SHA256,
+                           });
+
+                        Toast.MakeText(this, "Credential is " + SessionHolder.StatusAsString(scanResult.Status), ToastLength.Long).Show();
+
+                        Toast.MakeText(this, "Credential is " + SessionHolder.StatusAsString(scanResult.Status), ToastLength.Long).Show();
+
                         var typingProfileMatchingResult = await SessionHolder.Session.TypingProfileMatcher.MatchTypingProfile(recorder);
                         var message = "Not Enrolled";
                         bool notMatched = false;
