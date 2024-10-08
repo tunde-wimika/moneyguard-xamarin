@@ -42,7 +42,16 @@ namespace AndroidTestApp
             var startupRisk = await MoneyGuardSdk.Startup(this); 
             if(startupRisk.MoneyGuardActive)
             {
-                var issueList = startupRisk.Risks.Where(r => r.Status != RiskStatus.RISK_STATUS_SAFE).Select(x => x.StatusSummary).ToList();
+                var issueList = startupRisk.Risks.Where(r => r.Status != RiskStatus.RISK_STATUS_SAFE 
+                && (r.Name == SpecificRisk.SPECIFIC_RISK_DEVICE_ROOT_OR_JAILBREAK_NAME 
+                || r.Name == SpecificRisk.SPECIFIC_RISK_DEVICE_SECURITY_MISCONFIGURATION_LOW_QUALITY_DEVICE_PASSWORD_NAME
+                || r.Name == SpecificRisk.SPECIFIC_RISK_DEVICE_SECURITY_MISCONFIGURATION_USB_DEBUGGING_NAME
+                || r.Name == SpecificRisk.SPECIFIC_RISK_DEVICE_SECURITY_MISCONFIGURATION_INSTALL_UNKNOWN_APPS_ALLOWED_NAME
+                || r.Name == SpecificRisk.SPECIFIC_RISK_NETWORK_DNS_SPOOFING_NAME
+                || r.Name == SpecificRisk.SPECIFIC_RISK_NETWORK_MITM_NAME
+                || r.Name == SpecificRisk.SPECIFIC_RISK_NETWORK_WIFI_ENCRYPTION_NAME
+                || r.Name == SpecificRisk.SPECIFIC_RISK_NETWORK_WIFI_PASSWORD_PROTECTION_NAME)
+                ).Select(x => x.StatusSummary).ToList();
                 //Assess prelaunch risk
                 switch (startupRisk.PreLaunchVerdict.Decision)
                 {

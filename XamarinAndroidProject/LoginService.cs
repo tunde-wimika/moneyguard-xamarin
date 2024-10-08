@@ -24,14 +24,15 @@ namespace AndroidTestApp
     }
     internal class LoginService : RestApiClientBase
     {
-        public LoginService() : base("https://bankservice.azurewebsites.net/")
+        //public LoginService() : base("https://bankservice.azurewebsites.net/")
+        public LoginService() : base("https://moneyguardservice.azurewebsites.net/")
         {
         }
 
         public async Task<GenericResult<SessionResponse>> Session(string username, string password)
         {
             var result = await PostJsonAsync(
-$"/auth/emails/signin",
+$"api/v1/account/auth/emails/signin",
 UTF8Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new {
     Password = password,
     Email = username,

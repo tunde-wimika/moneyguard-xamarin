@@ -133,6 +133,9 @@
     <PackageReference Include="Wimika.MoneyGuard.Application.Tools">
       <Version>1.0.1</Version>
     </PackageReference>
+    <PackageReference Include="Wimika.MoneyGuard.Core.Android">
+      <Version>1.0.18</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.2.0.5" />
     <PackageReference Include="Xamarin.Essentials">
       <Version>1.8.1</Version>
@@ -169,12 +172,8 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\source\repos\Wimika.MoneyGuard.Core.Android\Wimika.MoneyGuard.Core.Android.csproj">
-      <Project>{129ad8c2-680f-4c3b-a2b6-bc1fd117d016}</Project>
-      <Name>Wimika.MoneyGuard.Core.Android</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\source\repos\Wimika.MoneyGuard.Core.Types\Wimika.MoneyGuard.Core.Types.csproj">
-      <Project>{67D09FE6-B3DD-4B5F-BB43-519CDC7718CA}</Project>
+      <Project>{4A0609B3-5756-42F0-9A77-37E3FD8DD705}</Project>
       <Name>Wimika.MoneyGuard.Core.Types</Name>
     </ProjectReference>
   </ItemGroup>

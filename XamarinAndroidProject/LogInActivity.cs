@@ -4,10 +4,10 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Com.Wimika.Moneyguardcore.Biometrics.Typing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using Wimika.MoneyGuard.Application.REST.ResponseModels;
 using Wimika.MoneyGuard.Application.Tools;
@@ -19,8 +19,6 @@ namespace AndroidTestApp
     [Activity(Label = "LogInActivity")]
     public class LogInActivity : Activity
     {
-
-
         private EditText usernameEditText;
         private EditText passwordEditText;
 
@@ -35,8 +33,6 @@ namespace AndroidTestApp
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.login);
 
-
-
             var button = FindViewById(Resource.Id.buttonLogin);
             button.Click += LoginClick;
 
@@ -44,8 +40,6 @@ namespace AndroidTestApp
             passwordEditText = FindViewById<EditText>(Resource.Id.editTextPassword);
 
             recorder = MoneyGuardSdk.CreateTypingProfileRecorder(this, TypingProfileParameters.CreateForFixeduserText("email"));
-
-
 
             usernameEditText.KeyPress += UsernameEditText_KeyPress; ;
             usernameEditText.AfterTextChanged += UsernameEditText_AfterTextChanged; ;
@@ -66,6 +60,16 @@ namespace AndroidTestApp
         private async void LoginClick(object sender, EventArgs eventArgs)
         {
             var response = await new LoginService().Session(usernameEditText.Text, passwordEditText.Text); // partner bank login
+
+            if (response.IsError)
+            {
+                Toast.MakeText(
+                            this,
+                            "Invalid email",
+                            ToastLength.Long
+                            ).Show();
+                return;
+            }
 
             var moneyGuardStatus = await MoneyGuardApp.Status(this, response.Data.SessionId);
 
@@ -97,29 +101,40 @@ namespace AndroidTestApp
                         var message = "Not Enrolled";
                         bool notMatched = false;
 
-                        if (typingProfileMatchingResult.IsEnrolledOnThisDevice)
+                        if (typingProfileMatchingResult != null)
                         {
-                            if (typingProfileMatchingResult.Matched)
+                            if (typingProfileMatchingResult.IsEnrolledOnThisDevice)
                             {
-                                if (typingProfileMatchingResult.HighConfidence)
+                                if (typingProfileMatchingResult.Matched)
                                 {
-                                    message = "Enrolled and Matched With High Confidence";
+                                    if (typingProfileMatchingResult.HighConfidence)
+                                    {
+                                        message = "Enrolled and Matched With High Confidence";
+                                    }
+                                    else
+                                    {
+                                        message = "Enrolled and Matched With Low Confidence";
+                                    }
                                 }
                                 else
                                 {
-                                    message = "Enrolled and Matched With Low Confidence";
+                                    //typing profile did not match, do not proceed
+                                    message = "Not matched";
+                                    notMatched = true;
                                 }
                             }
-                            else
+                            else if (typingProfileMatchingResult.HasOtherEnrollments)
                             {
-                                //typing profile did not match, do not proceed
-                                message = "Not matched";
-                                notMatched = true;
+                                message = "User Account has enrollment on other devices";
                             }
                         }
-                        else if (typingProfileMatchingResult.HasOtherEnrollments)
+                        else
                         {
-                            message = "User Account has enrollment on other devices";
+                            Toast.MakeText(
+                           this,
+                           "No typingProfileMatchingResult",
+                           ToastLength.Long
+                           ).Show();
                         }
 
                         Toast.MakeText(
@@ -130,14 +145,14 @@ namespace AndroidTestApp
 
                         if (notMatched)
                         {
-                            return;
+                            //return;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Toast.MakeText(this, ex.Message, ToastLength.Long).Show();
+                Toast.MakeText(this, ex.ToString(), ToastLength.Long).Show();
                 Console.WriteLine(ex.ToString());
                 return;
             }
@@ -172,6 +187,23 @@ namespace AndroidTestApp
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+
+        public static string ComputeSha256Hash(string value)
+        {
+            var sb = new StringBuilder();
+
+            using (var hash = SHA256Managed.Create())
+            {
+                var enc = Encoding.UTF8;
+                var result = hash.ComputeHash(enc.GetBytes(value));
+
+                foreach (var b in result)
+                    sb.Append(b.ToString("x2"));
+            }
+
+            return sb.ToString();
         }
     }
 

@@ -16,6 +16,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using Wimika.MoneyGuard.Application;
+using Wimika.MoneyGuard.Application.Tools;
 using Console = System.Console;
 using Environment = System.Environment;
 using File = System.IO.File;
@@ -48,7 +49,7 @@ namespace AndroidTestApp
             var installed = false;
             try
             {
-                installed = MoneyGuardApp.IsInstalled(this);
+                //installed = MoneyGuardApp.IsInstalled(this);
             }
             catch (Exception ex)
             {
@@ -63,7 +64,7 @@ namespace AndroidTestApp
 
         private async void InstallMoneyguardClick(object sender, EventArgs eventArgs)
         {
-            await Wimika.MoneyGuard.Application.MoneyGuardApp.Install();
+            //await Wimika.MoneyGuard.Application.MoneyGuardApp.Install();
         }
 
         private async void CredentialCheckClick(object sender, EventArgs eventArgs)

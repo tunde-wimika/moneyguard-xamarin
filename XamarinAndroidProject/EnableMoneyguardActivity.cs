@@ -25,7 +25,7 @@ namespace AndroidTestApp
             var btnInstallMoneyguard = FindViewById<Button>(Resource.Id.btn_install_moneyguard);
             btnInstallMoneyguard.Click += InstallMoneyGuard;
 
-            string moneyGuardStatusStr = Intent.GetStringExtra("moneyGuardStatus");
+            string moneyGuardStatusStr = Intent.GetStringExtra("moneyguardStatus");
             moneyGuardAppStatus = (MoneyGuardAppStatus)Enum.Parse(typeof(MoneyGuardAppStatus), moneyGuardStatusStr);
             switch (moneyGuardAppStatus)
             {

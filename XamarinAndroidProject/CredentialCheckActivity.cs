@@ -55,19 +55,20 @@ namespace AndroidTestApp
         }
         private async void CredentialCheckClick(object sender, EventArgs eventArgs)
         {
-            if(passwordEditText.Text.Length - 1 < StartingCharactersLength.FOUR.Length)
+            if(passwordEditText.Text.Length < 4)
             {
-                Toast.MakeText(this,"Password must be at least 5 Characters long", ToastLength.Long).Show();
+                Toast.MakeText(this,"Password must be at least 4 Characters long", ToastLength.Long).Show();
                 return;
             }
             var scanResult = await SessionHolder.Session.CheckCredential(
                 new Wimika.MoneyGuard.Core.Types.Credential
                 {
-                    Username = usernameEditText.Text,
-                    PasswordFragmentLength = StartingCharactersLength.FOUR,
+                    Username = usernameEditText.Text, 
+                     LastThreePasswordCharactersHash = ComputeSha256Hash(passwordEditText.Text.Substring(passwordEditText.Text.Length - 3)),
+                    //PasswordFragmentLength = StartingCharactersLength.FOUR,
                     Domain = "wimika.ng",
                     HashAlgorithm = Wimika.MoneyGuard.Core.Types.HashAlgorithm.SHA256,
-                    PasswordStartingCharactersHash = ComputeSha256Hash(passwordEditText.Text.Substring(0, StartingCharactersLength.FOUR.Length))
+                    //PasswordStartingCharactersHash = ComputeSha256Hash(passwordEditText.Text.Substring(0, StartingCharactersLength.FOUR.Length))
                 }); 
 
          

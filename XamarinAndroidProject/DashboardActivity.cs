@@ -24,7 +24,7 @@ namespace AndroidTestApp
             var btnExploreMoneyguard = FindViewById<Button>(Resource.Id.btn_explore_moneyguard);
             btnExploreMoneyguard.Click += ExploreMoneyGuard;
 
-            string moneyGuardStatusStr = Intent.GetStringExtra("moneyGuardStatus");
+            string moneyGuardStatusStr = Intent.GetStringExtra("moneyguardStatus");
             moneyGuardAppStatus = (MoneyGuardAppStatus)Enum.Parse(typeof(MoneyGuardAppStatus), moneyGuardStatusStr);
 
             btnEnableMoneyguard.Visibility = moneyGuardAppStatus == MoneyGuardAppStatus.Active ? ViewStates.Invisible : ViewStates.Visible;
