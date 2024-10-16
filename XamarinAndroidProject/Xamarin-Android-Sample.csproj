@@ -130,8 +130,20 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.3</Version>
+    </PackageReference>
     <PackageReference Include="Wimika.MoneyGuard.Application.Tools">
-      <Version>1.0.1</Version>
+      <Version>1.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="Wimika.MoneyGuard.Core.Android">
+      <Version>1.0.20</Version>
+    </PackageReference>
+    <PackageReference Include="Wimika.MoneyGuard.Core.Private.Android">
+      <Version>1.0.7</Version>
+    </PackageReference>
+    <PackageReference Include="Wimika.MoneyGuard.Core.Types">
+      <Version>1.0.13</Version>
     </PackageReference>
     <PackageReference Include="Wimika.MoneyGuard.Core.Android">
       <Version>1.0.18</Version>
@@ -170,12 +182,6 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\source\repos\Wimika.MoneyGuard.Core.Types\Wimika.MoneyGuard.Core.Types.csproj">
-      <Project>{4A0609B3-5756-42F0-9A77-37E3FD8DD705}</Project>
-      <Name>Wimika.MoneyGuard.Core.Types</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
