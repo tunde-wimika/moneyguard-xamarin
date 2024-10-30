@@ -87,10 +87,9 @@ namespace AndroidTestApp
                     DestinationAccountNumber = destinationAccount.Text,
                     DestinationBank = destinationBank.Text,
                     Memo = memo.Text,
-                    Location = new LatLng() { Latitude = location.Latitude, Longitude = location.Longitude } 
+                    Location = new LatLng() { Latitude = location.Latitude, Longitude = location.Longitude }
                 }
                 );
- 
 
             Toast.MakeText(this, "Debit Transaction status is " + SessionHolder.StatusAsString(result.Status), ToastLength.Long).Show();
         }

@@ -104,7 +104,7 @@ namespace AndroidTestApp
 
             Toast.MakeText(
                 this,
-                message,
+               $"{message} {typingProfileMatchingResult.Message}",
                 ToastLength.Long
                 ).Show();
 

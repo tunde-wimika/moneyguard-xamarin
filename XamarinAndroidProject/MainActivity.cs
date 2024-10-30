@@ -15,6 +15,7 @@ using Wimika.MoneyGuard.Core.Types;
 using static System.Net.Mime.MediaTypeNames;
 using Wimika.MoneyGuard.Application;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace AndroidTestApp
 {
@@ -42,16 +43,8 @@ namespace AndroidTestApp
             var startupRisk = await MoneyGuardSdk.Startup(this); 
             if(startupRisk.MoneyGuardActive)
             {
-                var issueList = startupRisk.Risks.Where(r => r.Status != RiskStatus.RISK_STATUS_SAFE 
-                && (r.Name == SpecificRisk.SPECIFIC_RISK_DEVICE_ROOT_OR_JAILBREAK_NAME 
-                || r.Name == SpecificRisk.SPECIFIC_RISK_DEVICE_SECURITY_MISCONFIGURATION_LOW_QUALITY_DEVICE_PASSWORD_NAME
-                || r.Name == SpecificRisk.SPECIFIC_RISK_DEVICE_SECURITY_MISCONFIGURATION_USB_DEBUGGING_NAME
-                || r.Name == SpecificRisk.SPECIFIC_RISK_DEVICE_SECURITY_MISCONFIGURATION_INSTALL_UNKNOWN_APPS_ALLOWED_NAME
-                || r.Name == SpecificRisk.SPECIFIC_RISK_NETWORK_DNS_SPOOFING_NAME
-                || r.Name == SpecificRisk.SPECIFIC_RISK_NETWORK_MITM_NAME
-                || r.Name == SpecificRisk.SPECIFIC_RISK_NETWORK_WIFI_ENCRYPTION_NAME
-                || r.Name == SpecificRisk.SPECIFIC_RISK_NETWORK_WIFI_PASSWORD_PROTECTION_NAME)
-                ).Select(x => x.StatusSummary).ToList();
+               var issues = startupRisk.Risks.Where(r => r.Status != RiskStatus.RISK_STATUS_SAFE);
+                
                 //Assess prelaunch risk
                 switch (startupRisk.PreLaunchVerdict.Decision)
                 {
@@ -59,16 +52,14 @@ namespace AndroidTestApp
                         text.Text = "proceed to launch app";
                         break;
                     case PreLaunchDecision.DoNotLaunch:
-                        text.Text = $"do not launch app";
+                        DisplayDoNotLaunchMessages(issues);
                         break;
                     case PreLaunchDecision.LaunchWithWarning:
-                        text.Text = $"launch app with warning";
+                        DisplayWarningMessages(issues);
                         break;
                     case PreLaunchDecision.LaunchWith2FA:
-                        text.Text = $"Request 2FA before launching app";
                         break;
                 }
-                text.Text += System.Environment.NewLine + string.Join(",", issueList);
             }
             else
             {
@@ -76,9 +67,80 @@ namespace AndroidTestApp
             }
         }
 
+        private void DisplayWarningMessages(IEnumerable<SpecificRisk> issues)
+        {
+            foreach (var issue in issues)
+            {
+                if (issue.Name == SpecificRisk.SPECIFIC_RISK_DEVICE_SECURITY_MISCONFIGURATION_USB_DEBUGGING_NAME)
+                {
+                    ShowAlertDialog("Launch Warning",
+                    "USB debugging is enabled on your device. Your login credentials may be compromised.",
+                    "Disable", "Proceed to launch anyway");
+                }
+
+                if (issue.Name == SpecificRisk.SPECIFIC_RISK_NETWORK_WIFI_ENCRYPTION_NAME ||
+                    issue.Name == SpecificRisk.SPECIFIC_RISK_NETWORK_WIFI_PASSWORD_PROTECTION_NAME)
+                {
+                    ShowAlertDialog("Launch Warning",
+                    "Unsecured WIFI detected. Your digital banking activities may be compromised.",
+                    "Disconnect", "Proceed");
+                }
+            }
+        }
+
+        private void DisplayDoNotLaunchMessages(IEnumerable<SpecificRisk> issues)
+        {
+            foreach (var issue in issues)
+            {
+                if (issue.Name == SpecificRisk.SPECIFIC_RISK_DEVICE_ROOT_OR_JAILBREAK_NAME)
+                {
+                    ShowAlertDialog("Launch Warning",
+                        "Device security is compromised. We strongly advise you not to log into your bank app.",
+                        "Ok", "Continue to login");
+                }
+
+                if (issue.Name == SpecificRisk.SPECIFIC_RISK_NETWORK_DNS_SPOOFING_NAME)
+                {
+                    ShowAlertDialog("Launch Warning",
+                        "Spoofing Detected. Your banking activities are at risk if you continue.",
+                        "Ok", "Proceed to login");
+                }
+
+                if (issue.Name == SpecificRisk.SPECIFIC_RISK_DEVICE_SECURITY_MISCONFIGURATION_LOW_QUALITY_DEVICE_PASSWORD_NAME)
+                {
+                    ShowAlertDialog("Launch Warning",
+                        "Your device doesn't have a password set. We recommend setting one for better security before logging into your bank app.",
+                        "Ok", "Continue to login");
+                }
+            }
+        }
+
         private async void ProceedClick(object sender, EventArgs eventArgs)
         {
             StartActivity(typeof(LogInActivity));
+        }
+
+        private void ShowAlertDialog(string title, string message, string btn1Text = "Ok", string btn2Text = null)
+        {
+            Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
+            Android.App.AlertDialog alert = dialog.Create();
+            alert.SetTitle(title);
+            alert.SetMessage(message);
+            alert.SetButton(btn1Text, (c, ev) => {
+
+                alert.Dismiss();
+            });
+
+            if (btn2Text != null)
+            {
+                alert.SetButton2(btn2Text, (c, ev) =>
+                {
+
+                    alert.Dismiss();
+                });
+            }
+
+            alert.Show();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
