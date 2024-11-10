@@ -107,6 +107,20 @@ namespace AndroidTestApp
                         $"please review and proceed with caution - {commaSeparatedRisks}",
                         "Proceed", null);
                 }
+                else if (result.Status == RiskStatus.RISK_STATUS_UNSAFE_CREDENTIALS)
+                {
+                    ShowAlertDialog("2FA Required",
+                        $"We have detected that you logged in with compromised credentials, " +
+                        $"a 2FA is required to proceed",
+                        "Proceed", null);
+                }
+                else if (result.Status == RiskStatus.RISK_STATUS_UNSAFE_LOCATION)
+                {
+                    ShowAlertDialog("2FA Required",
+                        $"We have detected that this transaction is happening in a suspicious location," +
+                        $"a 2FA is required to proceed",
+                        "Proceed", null);
+                }
                 else if (result.Status == RiskStatus.RISK_STATUS_UNSAFE)
                 {
                     var commaSeparatedRisks =

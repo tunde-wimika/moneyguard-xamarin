@@ -13,7 +13,7 @@ using Android.Widget;
 using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
 using Wimika.MoneyGuard.Core.Types;
 using static System.Net.Mime.MediaTypeNames;
-using Wimika.MoneyGuard.Application;
+//using Wimika.MoneyGuard.Application;
 using System.Linq;
 using System.Collections.Generic;
 using Xamarin.Essentials;
