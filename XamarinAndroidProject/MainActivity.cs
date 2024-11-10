@@ -16,6 +16,7 @@ using static System.Net.Mime.MediaTypeNames;
 using Wimika.MoneyGuard.Application;
 using System.Linq;
 using System.Collections.Generic;
+using Xamarin.Essentials;
 
 namespace AndroidTestApp
 {
@@ -31,6 +32,8 @@ namespace AndroidTestApp
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
+
+            //await RequestLocationPermission();
 
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
@@ -127,7 +130,6 @@ namespace AndroidTestApp
             alert.SetTitle(title);
             alert.SetMessage(message);
             alert.SetButton(btn1Text, (c, ev) => {
-
                 alert.Dismiss();
             });
 
@@ -135,7 +137,6 @@ namespace AndroidTestApp
             {
                 alert.SetButton2(btn2Text, (c, ev) =>
                 {
-
                     alert.Dismiss();
                 });
             }
@@ -160,6 +161,21 @@ namespace AndroidTestApp
             return base.OnOptionsItemSelected(item);
         }
 
+
+        public async Task RequestLocationPermission()
+        {
+            var locationPermissionStatus = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+
+            if (locationPermissionStatus == PermissionStatus.Granted)
+            {
+                // Permission granted, proceed with location operations
+            }
+            else if (locationPermissionStatus == PermissionStatus.Denied)
+            {
+                // Permission denied, handle accordingly
+               
+            }
+        }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

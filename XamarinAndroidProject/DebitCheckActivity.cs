@@ -78,21 +78,75 @@ namespace AndroidTestApp
 
         private async void DebitCheckClick(object sender, EventArgs eventArgs)
         {
-            var location = GetLocation();
-            var result = await SessionHolder.Session.CheckDebitTransaction(
-                new DebitTransaction
-                {
-                    Amount = double.Parse(amount.Text),
-                    SourceAccountNumber = sourceAccount.Text,
-                    DestinationAccountNumber = destinationAccount.Text,
-                    DestinationBank = destinationBank.Text,
-                    Memo = memo.Text,
-                    Location = new LatLng() { Latitude = location.Latitude, Longitude = location.Longitude }
-                }
-                );
+            try
+            {
+                var location = GetLocation();
+                var result = await SessionHolder.Session.CheckDebitTransaction(
+                    new DebitTransaction
+                    {
+                        Amount = double.Parse(amount.Text),
+                        SourceAccountNumber = sourceAccount.Text,
+                        DestinationAccountNumber = destinationAccount.Text,
+                        DestinationBank = destinationBank.Text,
+                        Memo = memo.Text,
+                        Location = new LatLng() { Latitude = location.Latitude, Longitude = location.Longitude }
+                    }
+                    );
 
-            Toast.MakeText(this, "Debit Transaction status is " + SessionHolder.StatusAsString(result.Status), ToastLength.Long).Show();
+                Toast.MakeText(this, "Debit Transaction status is " + SessionHolder.StatusAsString(result.Status), ToastLength.Long).Show();
+
+                if (result.Status == RiskStatus.RISK_STATUS_WARN)
+                {
+                    var commaSeparatedRisks = 
+                    string.Join(", ", result.Risks
+                                      .Where(r => r.Status == RiskStatus.RISK_STATUS_WARN)
+                                      .Select(r => r.StatusSummary));
+
+                    ShowAlertDialog("Warning",
+                        $"We have detected some threats that may put your transaction at risk, " +
+                        $"please review and proceed with caution - {commaSeparatedRisks}",
+                        "Proceed", null);
+                }
+                else if (result.Status == RiskStatus.RISK_STATUS_UNSAFE)
+                {
+                    var commaSeparatedRisks =
+                   string.Join(", ", result.Risks
+                                     .Where(r => r.Status == RiskStatus.RISK_STATUS_UNSAFE)
+                                     .Select(r => r.StatusSummary));
+
+                    ShowAlertDialog("2FA Required",
+                        $"We have detected some threats that may put your transaction at risk, " +
+                        $"a 2FA is required to proceed - {commaSeparatedRisks}",
+                        "Proceed", null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(this, "ERROR: " + ex.ToString(), ToastLength.Long).Show();
+            }
         }
+
+        private void ShowAlertDialog(string title, string message, string btn1Text = "Ok", string btn2Text = null)
+        {
+            Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
+            Android.App.AlertDialog alert = dialog.Create();
+            alert.SetTitle(title);
+            alert.SetMessage(message);
+            alert.SetButton(btn1Text, (c, ev) => {
+                alert.Dismiss();
+            });
+
+            if (btn2Text != null)
+            {
+                alert.SetButton2(btn2Text, (c, ev) =>
+                {
+                    alert.Dismiss();
+                });
+            }
+
+            alert.Show();
+        }
+
 
         private async void GoBackClick(object sender, EventArgs eventArgs)
         {

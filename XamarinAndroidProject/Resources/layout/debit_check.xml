@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:hint="Source Account Number"
+        android:text="0323456478"
         android:inputType="text" />
 
         <EditText
@@ -19,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:hint="Destination Bank"
+        android:text="Wema Bank"
         android:inputType="text" />
 
         <EditText
@@ -26,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:hint="Destination Account Number"
+        android:text="0312356511"
         android:inputType="text" />
 
     <EditText
@@ -33,6 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:hint="Amount"
+        android:text="20,000"
         android:inputType="numberDecimal" />
 
     <!-- Password EditText -->
@@ -41,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:hint="Memo"
+        android:text="Memo"
         android:inputType="text" />
 
     <!-- Login Button -->

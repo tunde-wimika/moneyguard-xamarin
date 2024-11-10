@@ -133,20 +133,8 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
     </PackageReference>
-    <PackageReference Include="Wimika.MoneyGuard.Application.Tools">
-      <Version>1.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="Wimika.MoneyGuard.Core.Android">
-      <Version>1.0.20</Version>
-    </PackageReference>
     <PackageReference Include="Wimika.MoneyGuard.Core.Private.Android">
       <Version>1.0.7</Version>
-    </PackageReference>
-    <PackageReference Include="Wimika.MoneyGuard.Core.Types">
-      <Version>1.0.13</Version>
-    </PackageReference>
-    <PackageReference Include="Wimika.MoneyGuard.Core.Android">
-      <Version>1.0.18</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.2.0.5" />
     <PackageReference Include="Xamarin.Essentials">
@@ -182,6 +170,20 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\source\repos\Wimika.MoneyGuard.Application\Wimika.MoneyGuard.Application.Tools.csproj">
+      <Project>{ef6845ca-e4d2-4f92-8f8f-c5ad12af46e6}</Project>
+      <Name>Wimika.MoneyGuard.Application.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\source\repos\Wimika.MoneyGuard.Core.Android\Wimika.MoneyGuard.Core.Android.csproj">
+      <Project>{129ad8c2-680f-4c3b-a2b6-bc1fd117d016}</Project>
+      <Name>Wimika.MoneyGuard.Core.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\source\repos\Wimika.MoneyGuard.Core.Types\Wimika.MoneyGuard.Core.Types.csproj">
+      <Project>{f83f79b5-85e0-4535-9a4b-1dc62fba3c6e}</Project>
+      <Name>Wimika.MoneyGuard.Core.Types</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

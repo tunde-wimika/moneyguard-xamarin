@@ -5,6 +5,12 @@ VisualStudioVersion = 17.11.35219.272
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin-Android-Sample", "Xamarin-Android-Sample.csproj", "{71E6D7DE-85A2-4484-9F4D-5B25C57C521D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wimika.MoneyGuard.Core.Android", "..\..\..\..\source\repos\Wimika.MoneyGuard.Core.Android\Wimika.MoneyGuard.Core.Android.csproj", "{129AD8C2-680F-4C3B-A2B6-BC1FD117D016}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wimika.MoneyGuard.Core.Types", "..\..\..\..\source\repos\Wimika.MoneyGuard.Core.Types\Wimika.MoneyGuard.Core.Types.csproj", "{F83F79B5-85E0-4535-9A4B-1DC62FBA3C6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wimika.MoneyGuard.Application.Tools", "..\..\..\..\source\repos\Wimika.MoneyGuard.Application\Wimika.MoneyGuard.Application.Tools.csproj", "{EF6845CA-E4D2-4F92-8F8F-C5AD12AF46E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +23,18 @@ Global
 		{71E6D7DE-85A2-4484-9F4D-5B25C57C521D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71E6D7DE-85A2-4484-9F4D-5B25C57C521D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{71E6D7DE-85A2-4484-9F4D-5B25C57C521D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{129AD8C2-680F-4C3B-A2B6-BC1FD117D016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{129AD8C2-680F-4C3B-A2B6-BC1FD117D016}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{129AD8C2-680F-4C3B-A2B6-BC1FD117D016}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{129AD8C2-680F-4C3B-A2B6-BC1FD117D016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F83F79B5-85E0-4535-9A4B-1DC62FBA3C6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F83F79B5-85E0-4535-9A4B-1DC62FBA3C6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F83F79B5-85E0-4535-9A4B-1DC62FBA3C6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F83F79B5-85E0-4535-9A4B-1DC62FBA3C6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF6845CA-E4D2-4F92-8F8F-C5AD12AF46E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF6845CA-E4D2-4F92-8F8F-C5AD12AF46E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF6845CA-E4D2-4F92-8F8F-C5AD12AF46E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF6845CA-E4D2-4F92-8F8F-C5AD12AF46E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
