@@ -33,6 +33,10 @@ namespace AndroidTestApp
                     return "Warn";
                 case RiskStatus.RISK_STATUS_UNSAFE:
                     return "Unsafe";
+                case RiskStatus.RISK_STATUS_UNSAFE_CREDENTIALS:
+                    return "Unsafe Credentials";
+                case RiskStatus.RISK_STATUS_UNSAFE_LOCATION:
+                    return "Unsafe Location";
             }
 
             return "Unknown";
